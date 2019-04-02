@@ -17,6 +17,8 @@ import rospy
 from std_msgs.msg import String
 from consts import *
 
+# TODO add display stuff
+
 DEBUG = 1
 DISPLAY = 1 # this displays camera output to a screen on the machine
 
