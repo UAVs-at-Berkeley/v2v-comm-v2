@@ -1,6 +1,6 @@
 import cv2.aruco as aruco
 
-ROWS = 7
+ROWS = 10
 COLS = 5
 markerLength = 40
 markerSeparation = 8
