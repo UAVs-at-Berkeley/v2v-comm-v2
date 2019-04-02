@@ -49,7 +49,6 @@ while True:
         # estimate pose
         retval, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, mtx, dist)
         aruco.drawAxis(frame, mtx, dist, rvec, tvec, 0.1)
-        print(tvec)
         aruco.drawDetectedMarkers(frame, corners, ids)
 
         cv2.putText(frame, "ID: " + str(ids), (0,64), font, 1, (0,255,0), 2, cv2.LINE_AA)

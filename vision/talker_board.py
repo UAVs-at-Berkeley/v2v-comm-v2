@@ -40,6 +40,8 @@ def talker():
     mtx = extract_calibration.camera_matrix
     dist = extract_calibration.dist_matrix
 
+    font = cv2.FONT_HERSHEY_SIMPLEX
+
     while not rospy.is_shutdown():
         ret, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -55,6 +57,13 @@ def talker():
             retval, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, mtx, dist)
             info = [ids, corners, rvec, tvec, retval]
             pub.publish(str(info))
+
+            if DISPLAY:
+                aruco.drawAxis(frame, mtx, dist, rvec, tvec, 0.1)
+                aruco.drawDetectedmarkers(frame, corners, ids)
+                cv2.putText(frame, "ID: " + str(ids), (0,64), font, 1, (0,255,0), 2, cv2.LINE_AA)
+                cv2.imshow('frame', frame)
+
         rate.sleep()
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
