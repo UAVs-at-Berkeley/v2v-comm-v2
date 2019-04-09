@@ -19,7 +19,7 @@ from std_msgs.msg import String
 
 # TODO add display stuff
 
-DEBUG = True # print message to stdout
+DEBUG = False # print message to stdout
 DISPLAY = False # this displays camera output to a screen on the machine
 
 def talker():
