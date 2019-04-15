@@ -20,9 +20,9 @@ from geometry_msgs.msg import PointStamped
 markerSideLength = 0.085 # meters
 
 # debug flags for output to the terminal of all the pose information
-DEBUG = True;
+DEBUG = True
 
-# setup ros node and publisher, for a point in space for now
+# setup ros node and publisher
 rospy.init_node('quad_cam', anonymous=True)
 pose_pub = rospy.Publisher('cam_pose', PoseStamped, queue_size = 10)
 
@@ -48,10 +48,10 @@ def aruco_tracker():
         aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
         parameters = aruco.DetectorParameters_create()
 
-        #lists of ids and the corners beloning to each id
+        # lists of ids and the corners belonging to each id
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
 
-        font = cv2.FONT_HERSHEY_SIMPLEX #font for displaying text (below)
+        font = cv2.FONT_HERSHEY_SIMPLEX # font for displaying text (below)
 
         if np.all(ids != None):
             # Estimate pose of each marker and return the rotation and translation vectors
@@ -69,7 +69,6 @@ def aruco_tracker():
             angle = (sum(axis_angle))/3.0
             rot_mat = tfs.rotation_matrix(angle, direction)
 
-            # PRINT TRANSLATION VECTOR
             # not sure why these are nested twice but seems to be required for drawAxis
             translation = tvec[0][0] # why is x never positive?
 
@@ -116,10 +115,9 @@ def aruco_tracker():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    # When everything done, release the capture
+    # release the capture
     cap.release()
     cv2.destroyAllWindows()
-
 
 
 if __name__ == '__main__':
