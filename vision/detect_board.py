@@ -12,11 +12,17 @@ import numpy as np
 import cv2
 import cv2.aruco as aruco
 import glob
+import sys
+# import rospy
+
+# import files from various directories by modifying the python path
+# depending on their location
 import extract_calibration
-#import rospy
+
+sys.path.append('./create_markers/')
 from consts import *
 
-# TODO add display stuff
+# TODO: CLEAN THIS UP AND ADD ROS POSE DETECTION AND PUBLISHING
 
 DEBUG = 1
 DISPLAY = 1 # this displays camera output to a screen on the machine
