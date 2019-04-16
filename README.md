@@ -114,9 +114,18 @@ The image will default to the Pi as an access point so it can be easily connecte
 * Run `sudo systemctl disable magni-base.service` to disable Ubiquity's services for their robot since we'll be using our own hardware.
 * Run `sudo systemctl disable roscore.service` to avoid `roscore` starting at startup on its own.
 
-### Install the Custom v2v Raspberry Pi Image
-1. This Raspberry pi image is based off the Ubiquity Robotics distribution of Ubuntu 16.04 for Raspberry Pi 3s. Download the zipped image file from our Google Drive (TODO: link here), it is not necessary to unzip it.
+### Copying a Raspberry Pi Image - [reference](https://raspberrypi.stackexchange.com/questions/311/how-do-i-backup-my-raspberry-pi)
+After a vanilla Raspberry Pi distribution (the Ubiquity distribution with ROS Kinetic, in our case) has been installed and modified with the appropriate packages, the image can be resaved for installation on other Raspberry Pis. In Ubuntu:
+1. Install GParted - a GUI partition manager for Ubuntu
 
-2. Download Etcher, a GUI image flashing tool (TODO: link here)
+   `sudo apt install gparted`
 
-3. Plug the SD card into your computer and flash the device using Etcher, be sure to select the correct storage device and zipped image file.
+2. Shutdown the Pi and plug in its SD card into the Ubuntu machine
+
+3. Launch GParted, find the 2 partitions of the Pi image (PI_BOOT and PI_ROOT). Whichever is listed second in the partition list will have the greatest number of "sectors". Right click on the partition and hit `information`, and copy the "last sector" number which determines the total number of bytes to copy into the resultant .img file.
+
+4. Run `dd` to copy the files (for the SD card mounted at `/dev/sdc` and a last sector of `31116287`):
+
+   `sudo dd if=/dev/sdc of=pi.img bs=512 count=31116287`
+
+**Note:** Using `dd` as described copies all the contents of the SD card (including free space), so the image file created will be as many gigabytes as the SD card has storage for. This should be avoidable (TODO).
