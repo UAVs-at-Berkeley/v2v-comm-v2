@@ -7,6 +7,7 @@ import numpy as np
 import cv2
 import glob
 
+DISPLAY = False
 WAIT_TIME = 250 # time to view the rendered image (milliseconds)
 
 # note checkerboard dimensions are counted by the block intersections
@@ -46,7 +47,8 @@ for fname in images:
 
         # Draw and display the corners
         img = cv2.drawChessboardCorners(img, (CHECKER_DIM[0],CHECKER_DIM[1]), corners2,ret)
-        cv2.imshow('img',img)
+        if DISPLAY == True:
+        	cv2.imshow('img',img)
         cv2.waitKey(WAIT_TIME)
 
     image_count += 1
