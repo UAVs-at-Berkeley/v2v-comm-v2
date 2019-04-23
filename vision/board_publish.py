@@ -26,7 +26,7 @@ import extract_calibration
 sys.path.append('./create_markers/')
 from consts import *
 
-DEBUG = True # outputs pose information to the terminal
+DEBUG = False # outputs pose information to the terminal
 DISPLAY = True # this displays camera output to a screen on the machine
 
 # setup ros node and publisher
@@ -65,8 +65,14 @@ def get_rot_mtx(axis_angle):
     # rvec returned by estimatePoseBoard is an axis-angle repesentation of the rotation
     # the direction of that vector indicates the axis of rotation
     # the length (norm) of the vector gives the angle of rotation about the prescribed axis
-    angle = (sum(axis_angle))/3.0
+    sum_of_squares = 0
+    for elem in axis_angle:
+        sum_of_squares += elem**2
+    angle = sqrt(sum_of_squares)
+
+    # returns a rotation matrix in homogeneous transformation form, i.e. a 4x4
     rot_mtx = tfs.rotation_matrix(angle, axis_angle)
+    
     return rot_mtx
 
 def board_tracker():
@@ -100,7 +106,31 @@ def board_tracker():
             # obtain the pose as a 3D point and quaternion orientation
             translation = tvec
             rot_mtx = get_rot_mtx(rvec)
-            quats = tfs.quaternion_from_matrix(rot_mtx) 
+            
+            ### MESSING AROUND WITH FIXING THESE ROTATIONS ###
+            # a rotation ninety degrees about the z axis as an experiment
+            # ninety_z = [[0, -1, 0, 0],
+            #             [1, 0, 0, 0],
+            #             [0, 0, 1, 0],
+            #             [0, 0, 0, 1]]
+
+            # rot_mtx = ninety_z*(ninety_z*rot_mtx)
+
+            # assuming the rotation matrix is that from world to camera
+            # as stated in OpenCV documentation
+            # R_wc = rot_mtx
+            # R_cw = tfs.inverse_matrix(R_wc)
+
+            # R_cv = [[1, 0, 0, 0],
+            #         [0, -1, 0, 0],
+            #         [0, 0, 1, 0],
+            #         [0, 0, 0, 1]]
+            # R_vc = tfs.inverse_matrix(R_cv)
+
+            # R_vw = R_vc*R_cw
+            # R_wv = tfs.inverse_matrix(R_vw)
+
+            quats = tfs.quaternion_from_matrix(rot_mtx) # takes a 4x4 transformation
 
             if DEBUG:
                 print_debug(translation, rot_mtx, quats)
