@@ -68,7 +68,7 @@ def get_rot_mtx(axis_angle):
     sum_of_squares = 0
     for elem in axis_angle:
         sum_of_squares += elem**2
-    angle = sqrt(sum_of_squares)
+    angle = np.sqrt(sum_of_squares)
 
     # returns a rotation matrix in homogeneous transformation form, i.e. a 4x4
     rot_mtx = tfs.rotation_matrix(angle, axis_angle)
