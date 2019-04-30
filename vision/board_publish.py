@@ -16,8 +16,9 @@ import sys
 import rospy
 import tf.transformations as tfs # for rotation matrix <> quaternions
 import std_msgs.msg # for Header in the stamped point
-from geometry_msgs.msg import Point, Quaternion, Pose, PoseStamped # stamped msgs include a header
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import Point, Quaternion, Pose, PoseStamped, PointStamped # stamped msgs include a header
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
 
 # import files from various directories by modifying the python path
 # depending on their location
@@ -32,6 +33,7 @@ DISPLAY = True # this displays camera output to a screen on the machine
 # setup ros node and publisher
 rospy.init_node('quad_cam', anonymous=True)
 pose_pub = rospy.Publisher('cam_pose', PoseStamped, queue_size = 10)
+cam_stream_pub = rospy.Publisher('cam_stream', Image, queue_size=10)
 
 loop_rate = 30 # 30 frames per second
 rate = rospy.Rate(loop_rate)
@@ -151,6 +153,10 @@ def board_tracker():
         h.frame_id = 'map'
 
         pose_pub.publish(h, pose)
+
+        # publish the streamed images
+        img_frame = CvBridge().cv2_to_imgmsg(frame)
+        cam_stream_pub.publish(img_frame, "RGB8")
 
         # wait for the amount of time required to achieve the publish rate
         rate.sleep()
