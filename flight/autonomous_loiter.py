@@ -39,16 +39,17 @@ def controller(quadPose):
     kd = 1;
 
     # just implemented p-control on each axis for now
-    angle_x = kp*(pos[0] - pos_setpoint[0])
-    angle_y = kp*(pos[1] - pos_setpoint[1])
-    angle_z = kp*(pos[2] - pos_setpoint[2])
+    angle_x = kp*(pos.x - pos_setpoint[0])
+    angle_y = kp*(pos.y - pos_setpoint[1])
+    angle_z = kp*(pos.z - pos_setpoint[2])
 
-    rospy.loginfo("X: " + angle_x)
+    rospy.loginfo("X: " + str(angle_x))
 
 # Converts ROS imgmsg to CV2 matrix
 def retrieveImage(imgmsg):
     try:
         mat = bridge.imgmsg_to_cv2(imgmsg, "rgb8")
+	print("Matrix: ")
         rospy.loginfo(mat)
     except CvBridgeError as e:
         print(e)
