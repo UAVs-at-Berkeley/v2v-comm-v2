@@ -63,7 +63,6 @@ def listener():
     rospy.Subscriber('cam_pose', PoseStamped, controller)
 
     # subscribe to the image stream topic and call retrieveImage function as a callback
-    #TODO Test this
     rospy.Subscriber('cam_stream', Image, retrieveImage)
 
     # spin() simply keeps python from exiting until this node is stopped
