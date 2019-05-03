@@ -18,7 +18,11 @@ which is assumed to track its command perfectly and instantaneously.
 import rospy
 import numpy as np
 import std_msgs.msg # for Header in the stamped point
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import Point, Quaternion, Pose, PoseStamped, PointStamped # stamped msgs include a header
+
+bridge = CvBridge()
 
 def controller(quadPose):
     # decompose the quadPose PoseStamped message
@@ -40,12 +44,26 @@ def controller(quadPose):
     angle_z = kp*(pos[2] - pos_setpoint[2])
 
     rospy.loginfo("X: " + angle_x)
+
+# Converts ROS imgmsg to CV2 matrix
+def retrieveImage(imgmsg):
+    try:
+        mat = bridge.imgmsg_to_cv2(imgmsg, "rgb8")
+        rospy.loginfo(mat)
+    except CvBridgeError as e:
+        print(e)
+        rospy.loginfo(e)
+
     
 def listener():
     rospy.init_node('position_controller', anonymous=True)
 
     # subscribe to the cam pose topic and call the controller function as a callback
     rospy.Subscriber('cam_pose', PoseStamped, controller)
+
+    # subscribe to the image stream topic and call retrieveImage function as a callback
+    #TODO Test this
+    rospy.Subscriber('cam_stream', Image, retrieveImage)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

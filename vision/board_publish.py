@@ -133,10 +133,10 @@ def board_tracker():
         pose_pub.publish(h, pose)
 
         # publish the streamed images
-        #img_frame = CvBridge().cv2_to_imgmsg(frame)
-        #cam_stream_pub.publish(img_frame, "RGB8")
-        cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "rgb8"))
-        print(rospy.is_shutdown())
+        try:
+            cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "rgb8"))
+        except CvBridgeError as e:
+            print(e)
 
 
         # wait for the amount of time required to achieve the publish rate
