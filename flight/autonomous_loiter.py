@@ -109,6 +109,7 @@ def controller(quadPose):
 
     # TODO: is a try/except block here?
     cmd_publish(roll_cmd, pitch_cmd, yaw_rate_cmd, thrust_cmd)
+
     
 def listener():
     rospy.init_node('position_controller', anonymous=True)
