@@ -29,5 +29,5 @@ output_size = (5000, 5000)
 aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
 
 # fill out after printing to confirm actual dimensions of the board
-realMarkerLength = 0.02
-realMarkerSeparation = 0.012
+realMarkerLength = 0.091
+realMarkerSeparation = 0.0794
