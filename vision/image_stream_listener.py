@@ -7,6 +7,7 @@ A listener that retrieves the image stream from board_publish.py.
 import rospy
 import numpy as np
 import std_msgs.msg
+import cv2
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -18,6 +19,8 @@ def retrieveImage(imgmsg):
         mat = bridge.imgmsg_to_cv2(imgmsg, "rgb8")
         print("Matrix: ")
         rospy.loginfo(mat)
+        cv2.imshow("Image stream", mat)
+
     except CvBridgeError as e:
         print(e)
         rospy.loginfo(e)
