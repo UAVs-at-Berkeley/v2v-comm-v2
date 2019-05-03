@@ -81,6 +81,7 @@ def board_tracker():
     # initialize the pose
     translation = [0, 0, 0]
     quats = [0, 0, 0, 0]
+    bridge = CvBridge()
 
     while not rospy.is_shutdown():
         ret, frame = cap.read()
@@ -132,8 +133,11 @@ def board_tracker():
         pose_pub.publish(h, pose)
 
         # publish the streamed images
-        img_frame = CvBridge().cv2_to_imgmsg(frame)
-        cam_stream_pub.publish(img_frame, "RGB8")
+        #img_frame = CvBridge().cv2_to_imgmsg(frame)
+        #cam_stream_pub.publish(img_frame, "RGB8")
+        cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "RGB8"))
+        print(rospy.is_shutdown())
+
 
         # wait for the amount of time required to achieve the publish rate
         rate.sleep()
