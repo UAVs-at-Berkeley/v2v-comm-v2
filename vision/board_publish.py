@@ -114,6 +114,8 @@ def board_tracker():
             #             [0, 0, 1, 0],
             #             [0, 0, 0, 1]]
 
+            # TODO: THERE HAS GOT TO BE A LIBRARY WITH THESE INDIVIDUAL MATRICES FOR ROTATING ABOUT THE X, Y, Z
+
             # rot_mtx = ninety_z*(ninety_z*rot_mtx)
 
             # assuming the rotation matrix is that from world to camera
