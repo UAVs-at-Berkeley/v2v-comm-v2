@@ -135,7 +135,7 @@ def board_tracker():
         # publish the streamed images
         #img_frame = CvBridge().cv2_to_imgmsg(frame)
         #cam_stream_pub.publish(img_frame, "RGB8")
-        cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "RGB8"))
+        cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "rgb8"))
         print(rospy.is_shutdown())
 
 
