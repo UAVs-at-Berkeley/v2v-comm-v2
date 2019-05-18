@@ -100,7 +100,7 @@ def board_tracker():
         
         font = cv2.FONT_HERSHEY_SIMPLEX
 
-        if np.all(ids != None): # if there is at least one detected marker
+        if np.all(ids is not None): # if there is at least one detected marker
             # estimate pose
             # The returned transformation is the one that transforms points from the board
             # coordinate system to the camera coordinate system.
@@ -115,11 +115,10 @@ def board_tracker():
             if DEBUG:
                 print_debug(translation, rot_mtx, quats)
 
-            if DISPLAY:
-                # draw on the frame for each marker and the board's origin
-                axisLength = 0.1 # the length in meters of the axis drawn on the board
-                aruco.drawAxis(frame, mtx, dist, rvec, tvec, axisLength)
-                aruco.drawDetectedMarkers(frame, corners, ids)
+            # draw on the frame for each marker and the board's origin
+            axisLength = 0.1 # the length in meters of the axis drawn on the board
+            aruco.drawAxis(frame, mtx, dist, rvec, tvec, axisLength)
+            aruco.drawDetectedMarkers(frame, corners, ids)
 
         # publish the stamped point
         p = Point(translation[0], translation[1], translation[2])
