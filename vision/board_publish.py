@@ -2,7 +2,7 @@
 
 '''
 Track the pose of a pre-generated aruco grid board and publish the pose of the camera
-to a ros topic
+to a ros topic, also publishes camera images to the /cam_stream topic
 
 Note: a priori grid geometry is imported from consts.py
 '''
@@ -134,7 +134,7 @@ def board_tracker():
 
         # publish the streamed images
         try:
-            cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "rgb8"))
+            cam_stream_pub.publish(bridge.cv2_to_imgmsg(frame, "bgr8"))
         except CvBridgeError as e:
             print(e)
 
